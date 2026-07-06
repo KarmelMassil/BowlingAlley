@@ -1,0 +1,20 @@
+{
+  "name": "cg_ex6",
+  "version": "1.0.0",
+  "description": "exercise 6 in Computer Graphics course - interactive bowling game",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "verify:scoring": "node tools/scoring_test.mjs",
+    "verify:geometry": "node tools/geometry_check.mjs",
+    "verify:game": "node tools/game_sim.mjs",
+    "verify:motion": "node tools/pin_motion_probe.mjs",
+    "test": "node tools/scoring_test.mjs && node tools/game_sim.mjs && node tools/pin_motion_probe.mjs && node tools/geometry_check.mjs"
+  },
+  "author": "Hershel Thomas and Karmel Reuben Massil",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

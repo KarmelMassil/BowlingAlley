@@ -1,0 +1,330 @@
+/* HUD overlay for the bowling alley. The scorecard and controls panels are
+ * placeholders for HW06. The overlay sits above the canvas and is
+ * click-through (pointer-events: none) so it doesn't block the camera. */
+
+:root {
+  --hud-bg: rgba(14, 18, 30, 0.82);
+  --hud-border: rgba(120, 160, 220, 0.25);
+  --hud-text: #e8eefc;
+  --hud-muted: #93a4c4;
+  --hud-accent: #00e0ff;
+  --hud-gold: #ffd23f;
+  --hud-font: 'Segoe UI', 'Arial', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #10101c;
+  font-family: var(--hud-font);
+}
+
+/* Wrapper for every overlay; click-through by default. */
+#ui-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ---- Title ------------------------------------------------------------- */
+#title-bar {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  color: var(--hud-text);
+}
+#title-bar h1 {
+  margin: 0;
+  font-size: 19px;
+  letter-spacing: 0.5px;
+}
+#title-bar p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--hud-muted);
+}
+
+/* ---- Scorecard (10-frame, top-centre) ---------------------------------- */
+#scorecard {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  background: var(--hud-bg);
+  border: 1px solid var(--hud-border);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+/* Each player's row of frames. */
+.score-row {
+  display: flex;
+  gap: 2px;
+  align-items: stretch;
+  padding: 2px 3px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+.score-row.row-active {
+  background: rgba(0, 224, 255, 0.1);
+  border-color: rgba(0, 224, 255, 0.45);
+}
+.score-row.row-idle {
+  opacity: 0.5; /* the player who is waiting is dimmed */
+}
+#scorecard .player {
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 4px;
+  color: var(--hud-gold);
+  font-weight: 700;
+  font-size: 13px;
+}
+.frame {
+  display: flex;
+  flex-direction: column;
+  min-width: 46px;
+  border: 1px solid var(--hud-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.frame.frame-10 {
+  min-width: 64px;
+}
+.frame .frame-no {
+  text-align: center;
+  font-size: 10px;
+  color: var(--hud-muted);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1px 0;
+}
+.frame .rolls {
+  display: flex;
+  justify-content: flex-end;
+  height: 18px;
+}
+.frame .roll {
+  flex: 1;
+  border-left: 1px solid var(--hud-border);
+  border-bottom: 1px solid var(--hud-border);
+  font-size: 11px;
+  color: var(--hud-text);
+  text-align: center;
+  line-height: 18px;
+}
+.frame .roll:first-child {
+  border-left: none;
+}
+.frame .cumulative {
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--hud-accent);
+}
+
+/* ---- Controls panel (bottom-left) -------------------------------------- */
+#controls-panel {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  min-width: 210px;
+  padding: 12px 14px;
+  background: var(--hud-bg);
+  border: 1px solid var(--hud-border);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  color: var(--hud-text);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+#controls-panel h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 8px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--hud-accent);
+}
+
+/* On/off badges (Orbit / Follow / Bumpers): visible feedback for the toggles. */
+#status-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 10px;
+}
+#status-badges span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+#status-badges span.status-on {
+  color: #3ad17a;
+  background: rgba(58, 209, 122, 0.12);
+}
+#status-badges span.status-off {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.12);
+}
+#controls-panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#controls-panel li {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 12.5px;
+  padding: 3px 0;
+  color: var(--hud-muted);
+}
+#controls-panel li .label {
+  color: var(--hud-text);
+}
+kbd {
+  font-family: var(--hud-font);
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--hud-border);
+  border-radius: 4px;
+  padding: 1px 7px;
+  color: var(--hud-text);
+}
+#controls-panel .future {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--hud-border);
+  font-size: 11px;
+  color: var(--hud-muted);
+  font-style: italic;
+}
+
+/* Hide the HUD on very small viewports so it never crowds the scene. */
+@media (max-width: 640px) {
+  #scorecard,
+  #title-bar p {
+    display: none;
+  }
+}
+
+/* =========================================================================
+ * HW06 game HUD: power meter, event/status banners, active-frame highlight.
+ * ========================================================================= */
+
+.hidden { display: none !important; }
+
+/* Active frame highlight on the live scorecard. */
+.frame.frame-active {
+  outline: 2px solid var(--hud-accent);
+  outline-offset: -1px;
+  box-shadow: 0 0 10px rgba(0, 224, 255, 0.35);
+}
+
+/* Big event banner (STRIKE! / SPARE! / GUTTER / GAME OVER). */
+#message-banner {
+  position: absolute;
+  top: 92px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--hud-text);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+#message-banner.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+#message-banner.strike { color: var(--hud-gold); }
+#message-banner.spare  { color: var(--hud-accent); }
+#message-banner.gutter { color: #ff6b6b; }
+#message-banner.over   { color: var(--hud-gold); font-size: 30px; }
+#message-banner.info   { color: var(--hud-text); font-size: 26px; }
+
+/* Power and hook meters, stacked at the bottom centre. */
+#power-meter,
+#spin-meter {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px;
+  padding: 10px 14px;
+  background: var(--hud-bg);
+  border: 1px solid var(--hud-border);
+  border-radius: 10px;
+  text-align: center;
+}
+#power-meter { bottom: 26px; }
+#spin-meter { bottom: 92px; }
+#power-meter .power-label,
+#spin-meter .power-label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--hud-muted);
+  margin-bottom: 6px;
+}
+.power-track {
+  height: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--hud-border);
+  border-radius: 9px;
+  overflow: hidden;
+}
+#power-fill {
+  height: 100%;
+  width: 0%;
+  background: #3ad17a;
+  /* No CSS transition: the bar must show the exact current value so that
+   * locking with Space matches what the player sees (no perceived lag). */
+}
+
+/* Hook / accuracy meter: a marker sweeps across; centre = straight. */
+.spin-track {
+  position: relative;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--hud-border);
+  border-radius: 9px;
+}
+.spin-center {
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--hud-gold);
+  transform: translateX(-1px);
+}
+#spin-marker {
+  position: absolute;
+  top: 1px;
+  width: 6px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--hud-accent);
+  left: 50%;
+  transform: translateX(-3px);
+  box-shadow: 0 0 8px rgba(0, 224, 255, 0.7);
+}

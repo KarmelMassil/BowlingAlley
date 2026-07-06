@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>HW6 - Bowling Game</title>
+		<link rel="stylesheet" href="src/styles.css">
+		<!-- THREE.js r128 (global `THREE`), loaded before the ES modules. -->
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'></script>
+	</head>
+	<body>
+		<!-- HUD overlay. The scorecard and controls come from HW05; HW06 adds the
+		     live scoring, the power meter, and the message/status banners. -->
+		<div id="ui-layer">
+			<div id="title-bar">
+				<h1>🎳 Bowling Game</h1>
+				<p>Computer Graphics, Exercise 6 — interactive</p>
+			</div>
+
+			<!-- Live 10-frame scorecard (populated by ui.js, scored by game) -->
+			<div id="scorecard" aria-label="Bowling scorecard"></div>
+
+			<!-- Big event message (STRIKE! / SPARE! / GUTTER / GAME OVER) -->
+			<div id="message-banner"></div>
+
+			<!-- Oscillating power meter (shown during the power phase) -->
+			<div id="power-meter" class="hidden">
+				<div class="power-label">POWER — press Space to lock</div>
+				<div class="power-track"><div id="power-fill"></div></div>
+			</div>
+
+			<!-- Hook / accuracy meter (shown during the spin phase) -->
+			<div id="spin-meter" class="hidden">
+				<div class="power-label">HOOK — Space at centre to throw straight</div>
+				<div class="spin-track"><div class="spin-center"></div><div id="spin-marker"></div></div>
+			</div>
+
+			<!-- Controls list (populated by ui.js) -->
+			<div id="controls-panel">
+				<h2>Controls</h2>
+				<div id="status-badges">
+					<span id="orbit-status" class="status-on">Orbit: ON</span>
+					<span id="follow-status" class="status-on">Follow: ON</span>
+					<span id="bumper-status" class="status-off">Bumpers: DOWN</span>
+				</div>
+				<ul id="controls-list"></ul>
+			</div>
+		</div>
+
+		<!-- Scene + game entry point -->
+		<script src="src/hw6.js" type="module"></script>
+	</body>
+</html>
