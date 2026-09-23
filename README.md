@@ -60,9 +60,9 @@ The game is a small state machine: **aiming → power → hook → rolling → r
 1-3 / 1-2 pins) with good speed; a flat dead-centre hit leaves a split, so just
 mashing Space down the middle will not give you a strike.
 
-## What's Implemented (by grading section)
+## What's Implemented
 
-Aiming & controls (20):
+Aiming & controls:
 
 - Move/aim the ball along the foul line (a dashed aim line shows the line).
 - Two on-screen meters: an oscillating power meter, then a sweeping hook/accuracy
@@ -70,7 +70,7 @@ Aiming & controls (20):
   hook from where you lock the accuracy marker.
 - The HW05 controls panel and the O orbit toggle are carried over.
 
-Ball physics (20):
+Ball physics:
 
 - The ball is given a velocity at release and integrated each frame as
   `position += velocity * deltaTime` (a `THREE.Clock` supplies the delta), with
@@ -81,7 +81,7 @@ Ball physics (20):
 - The ball finishes in the **pit** at the back of the deck and is then **returned
   to the bowler** (a ball-return animation) for the next ball.
 
-Pin collision & toppling (20):
+Pin collision & toppling:
 
 - All collisions are **impulse-based** (see `physics.js`): along the line of
   centres, the impulse `j = -(1+e)(v·n)/(1/m_a+1/m_b)` is shared by inverse mass.
@@ -99,23 +99,18 @@ Pin collision & toppling (20):
   Downed pins are swept between balls so the remaining pins can be picked up for
   a **spare**.
 
-Scoring system (25):
+Scoring system:
 
 - Full ten-frame scoring with correct strike (10 + next two balls), spare
   (10 + next ball) and open-frame rules, the special three-ball 10th frame, and
   a running cumulative total, shown live in the scorecard with X / / / -
   notation. Pins reset between rolls and frames as appropriate.
 
-Game flow & state (10):
+Game flow & state:
 
 - End-of-roll detection, fallen-pin counting, frame/roll advancement, ball and
   pin reset, a clear "GAME OVER" with the final score, and R to start again.
 
-Code quality (5):
-
-- Modular ES modules: the scene (HW05) plus `scoring.js` (pure, tested),
-  `physics.js` (pure impulse/reflection collision math), `game.js` (the state
-  machine and physics), `gameui.js` (HUD) and `audio.js`.
 
 ## Features
 
