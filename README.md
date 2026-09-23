@@ -1,4 +1,4 @@
-# Computer Graphics - Exercise 6: Interactive Bowling Game
+# Computer Graphics - Interactive Bowling Game
 
 A playable 3D bowling game built with Three.js (r128) and WebGL. It builds on
 the HW05 static alley and adds the interactive layer: aiming and an oscillating
@@ -9,10 +9,6 @@ physics and collision are hand-written in the animation loop, no physics engine.
 ## ▶ Gameplay Video
 
 <https://drive.google.com/file/d/1c4X6wALgbfxej6s7M-ccwHzbIhkY11vX/view?usp=sharing>
-
-(Hosted on Google Drive — the file is larger than Moodle's 30 MB upload limit.
-See [Gameplay Video / Screenshots](#gameplay-video--screenshots) for what it
-shows.)
 
 ## How to Run
 
@@ -121,7 +117,7 @@ Code quality (5):
   `physics.js` (pure impulse/reflection collision math), `game.js` (the state
   machine and physics), `gameui.js` (HUD) and `audio.js`.
 
-## Extra / Bonus Features
+## Features
 
 - Ball hook/curve set with a timed accuracy meter, so aim, power and hook all
   take skill (and the pocket actually matters).
@@ -176,19 +172,7 @@ Code quality (5):
   and deflects on impact.
 - `tools/geometry_check.mjs` — the HW05 scene dimensions against the spec.
 
-## Gameplay Video / Screenshots
-
-**▶ Gameplay video:**
-<https://drive.google.com/file/d/1c4X6wALgbfxej6s7M-ccwHzbIhkY11vX/view?usp=sharing>
-
-(Hosted on Google Drive because the file is larger than Moodle's upload limit.)
-The video shows: aiming and releasing with the power meter, the ball rolling and
-knocking down pins, a gutter ball, and the scorecard updating across several
-frames (including a strike and a spare), plus a quick tour of the bonus features
-(follow camera, pinsetter + ball return, two-player mode, bumpers, and the camera
-presets / lane oil).
-
-Screenshots:
+## Screenshots
 
 | Aiming (aim line) | Power meter |
 | --- | --- |
@@ -206,10 +190,6 @@ Screenshots:
 | --- | --- |
 | ![Scoreboard](screenshots/07-live-scoreboard.png) | |
 
-Bonus systems (pin deck with kickback plates, the pinsetter mid-cycle with the
-standing pins lifted while the rake clears the deadwood, and the ball returning
-into the rack):
-
 | Pin deck + kickbacks | Pinsetter cycle | Ball return |
 | --- | --- | --- |
 | ![Kickbacks](screenshots/08-pin-deck-kickbacks.png) | ![Pinsetter](screenshots/09-pinsetter-cycle.png) | ![Ball return](screenshots/10-ball-return.png) |
@@ -218,13 +198,6 @@ into the rack):
 | --- | --- |
 | ![Lane oil](screenshots/11-lane-oil.png) | ![Two players](screenshots/12-two-player.png) |
 
-## Known Limitations
-
-- The physics is hand-written impulse response (no physics engine): collisions
-  are circle-vs-circle in the lane plane, and a pin's tumble is animated rather
-  than a full rigid-body solve, so it approximates real pin action.
-- The lane-oil model is a simplified two-zone version (oiled front, dry back) that
-  scales the hook by lane position; it is not a full board-by-board friction map.
 
 ## Physics References
 
